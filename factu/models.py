@@ -1,7 +1,14 @@
 # -*- encoding:utf-8 -*-
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
+
+User.add_to_class('matricula', models.PositiveIntegerField(null=True, blank=True))
+User.add_to_class('ci', models.PositiveIntegerField(null=True, blank=True))
+User.add_to_class('direccion', models.CharField(max_length=50, null=True, blank=True))
+
+
 class Editor(models.Model):
     nombre = models.CharField(max_length=30)
 
@@ -50,22 +57,8 @@ class Libro(models.Model):
 		return '%d %s %s %s %d %s %s %s %s %s'%(self.id, self.codigo, self.titulo, self.autor, self.ejemplares, self.editor, self.estado, self.area, self.tipo_documento, self.notas)
 
 
-class Usuario(models.Model):
-    usuario = models.CharField(max_length=30, unique = True)
-    contrasenia = models.CharField(max_length=30)
-    nombre = models.CharField(max_length=30)
-    apellidos = models.CharField(max_length=50)
-    matricula = models.PositiveIntegerField(unique = True)
-    telefono = models.IntegerField(null = True)
-    ci = models.PositiveIntegerField(unique = True)
-    email = models.EmailField(blank = True)
-    tipo_usuario = models.BooleanField()
-
-    def __str__(self):
-        return '%d %s %s %s %s %d %d %d %s %d'%(self.id, self.usuario, self.contrasenia, self.nombre, self.apellidos, self.matricula, self.telefono, self.ci, self.email, self.tipo_usuario)
-
 class Prestamo(models.Model):
-    usuario = models.ForeignKey(Usuario)
+    usuario = models.ForeignKey(User)
     libro = models.ForeignKey(Libro)
     fecha_prestamo = models.DateField(auto_now_add = True)
     estado = models.CharField(max_length=20)

@@ -3,46 +3,81 @@
 
 <h1>Registrarse</h1>
 <div class="x_content" style="background-color: #fff;">
-  <form class="form-horizontal form-label-left" novalidate="" action="/register_account/" method="POST">{% csrf_token %}
 
-                                          <!-- <p>For alternative validation library <code>parsleyJS</code> check out in the <a href="form.html">form page</a> -->
-                                          </p>
+  <form class="form-horizontal form-label-left" novalidate="" action="/register_account/" method="POST">{% csrf_token %}
+                                          <!-- revisar para validacion -->
+                                          <!-- <p>For alternative validation library <code>parsleyJS</code> check out in the <a href="form.html">form page</a>
+                                          </p> -->
+
+
+                                          {% if errors %}
+                                            <p>
+                                              <ul>
+                                                {% for error in errors %}
+                                                  <li><code>{{ error }}</code></li>
+                                                {% endfor %}
+                                              </ul>
+                                            </p>
+                                          {% endif %}
+
                                           <span class="section">Información Personal</span>
 
                                           <div class="item form-group">
                                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Usuario <span class="required">*</span>
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input id="username" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="username" placeholder="both name(s) e.g Jon Doe" required="required" type="text">
+                                                  <input id="username" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="username" placeholder="Introduce Usuario" required="required" type="text" value="{{ username }}">
                                               </div>
                                           </div>
                                           <div class="item form-group">
                                               <label for="password" class="control-label col-md-3">Contraseña <span class="required">*</span></label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input id="password" type="password" name="password" data-validate-length="6,8" class="form-control col-md-7 col-xs-12" required="required">
+                                                  <input id="password" type="password" name="password" data-validate-length="6,8" class="form-control col-md-7 col-xs-12" required="required" value="{{ password }}">
                                               </div>
                                           </div>
                                           <div class="item form-group">
                                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Nombre <span class="required">*</span>
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input id="firstname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="firstname" placeholder="Nombres" required="required" type="text">
+                                                  <input id="firstname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="firstname" placeholder="Nombres" required="required" type="text" value="{{ firstname }}">
                                               </div>
                                           </div>
                                           <div class="item form-group">
                                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Apellido <span class="required">*</span>
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Apellidos" required="required" type="text">
+                                                  <input id="lastname" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="2" name="lastname" placeholder="Apellidos" required="required" type="text" value="{{ lastname }}">
                                               </div>
                                           </div>
                                           <div class="item form-group">
                                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email <span class="required">*</span>
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12">
+                                                  <input type="email" id="email" name="email" required="required" class="form-control col-md-7 col-xs-12" value="{{ email }}">
                                               </div>
                                           </div>
+                                           <div class="item form-group">
+                                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="matricula">Matricula <span class="required">*</span>
+                                              </label>
+                                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                                  <input  id="matricula" name="matricula" required="required" class="form-control col-md-7 col-xs-12" value="{{matricula}}">
+                                              </div>
+                                          </div>
+                                           <div class="item form-group">
+                                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ci">CI <span class="required">*</span>
+                                              </label>
+                                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                                  <input  id="ci" name="ci" required="required" class="form-control col-md-7 col-xs-12" value="{{ ci }}">
+                                              </div>
+                                          </div>
+                                          <div class="item form-group">
+                                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="direccion">Dirección <span class="required">*</span>
+                                              </label>
+                                              <div class="col-md-6 col-sm-6 col-xs-12">
+                                                  <input type="text" id="direccion" name="direccion" required="required" class="form-control col-md-7 col-xs-12" value="{{ direccion }}">
+                                              </div>
+                                          </div>
+
                                           <!-- <div class="item form-group">
                                               <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Confirm Email <span class="required">*</span>
                                               </label>

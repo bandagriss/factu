@@ -8,36 +8,6 @@ Registrar
 <br>
 <br>
 <br>
-{% if form.errors %}
-<p class="error">Diculpe, el usuario o contraseña son ivalidos</p>
-{% endif %}
-
-   <!-- <div class="container">
-
-      <form class="form-signin1" action="/auth_view/" method="POST">{% csrf_token %}
-        <h2 class="form-signin-heading1"> <img src="/static/img/tux_gandal.png"  WIDTH=70 HEIGHT=72>     BIBLIOTECA </h2>
-
-
-        <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" required autofocus>
-        <br>
-
-        <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required autofocus>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button><br>
-        <br>
-        <div class="registrarse" align="right">
-          <a href="/register_user/">>>>Registrarse...</a>
-        </div>
-
-
-
-
-      </form>
-
-    </div> <!-- /container-->
-
-
-
 
         <div class="">
         <a class="hiddenanchor" id="toregister"></a>
@@ -46,6 +16,9 @@ Registrar
         <div id="wrapper">
             <div id="login" class="animate form">
                 <section class="login_content">
+                  {% if ok %}
+                    <p><li>{{ ok }}</li></p>
+                  {% endif %}
                     <form action="/auth_view/" method="POST">{% csrf_token %}
                         <h1>BIBLIOTECA</h1>
                         <div>

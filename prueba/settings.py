@@ -73,6 +73,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'prueba.wsgi.application'
 
+AUTH_PROFILE_MODULE = 'factu.Prestamo'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -80,8 +82,8 @@ WSGI_APPLICATION = 'prueba.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dbname',
-        'USER': 'dbuser',
+        'NAME': 'biblioteca',
+        'USER': 'root',
         'PASSWORD': 'bandagriss',
         'HOST': 'localhost',
         'PORT': '5432'
