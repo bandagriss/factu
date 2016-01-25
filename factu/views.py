@@ -11,6 +11,7 @@ from django.template import RequestContext
 
 # envio de mail
 from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
@@ -117,8 +118,7 @@ def buscarEstudiante(request):
         if not q:
             return redirect('/estudiantesIndex/')
         else:
-            estudiante = User.objects.filter(id__icontains=q) or User.objects.filter(first_name__icontains=q) or User.objects.filter(last_name__icontains=q) or User.object.filter(matricula__icontains=q) or User.object.filter(email__icontains=q)
-
+            estudiante = User.objects.filter(id__icontains=q) or User.objects.filter(first_name__icontains=q) or User.objects.filter(last_name__icontains=q) or User.objects.filter(matricula__icontains=q) or User.objects.filter(email__icontains=q)
             paginator = Paginator(estudiante, 15)
             page = request.GET.get('page')
             try:
@@ -127,6 +127,10 @@ def buscarEstudiante(request):
                 users = paginator.page(1)
             except EmptyPage:
                 users = paginator.page(paginator.num_pages)
+            if not estudiante:
+                empty = 'No hay resultados para %s'%q
+                return render(request, 'usuarios.html', {'usuarios':users, 'query':q, 'empty':empty})
+
             return render(request, 'usuarios.html', {'usuarios':users, 'query':q})
 	return render(request, 'buscar_autor.html', {'errors':errors})
 
@@ -147,6 +151,8 @@ def register_account(request):
             errors.append('Por favor Introduce la Contraseña')
         if (len(request.POST.get('password'))<5):
             errors.append('La Contraseña debe tener minimamente 5 caracteres.')
+        if(request.POST.get('password') != request.POST.get('password2')):
+            errors.append('Las Contraseñas no coinciden vuelva a intentarlo')
         if not request.POST.get('firstname', ''):
             errors.append('Por favor Introduce tu Nombre')
         if not request.POST.get('matricula',''):
@@ -190,17 +196,40 @@ def register_account(request):
             account.direccion = direccion
             account.save()
             # return HttpResponse('<h1>usuario Creado Correctamente</h1>')
+
+            enviaCorreo(usuario, contrasenia, correo)
             ok = 'Cuenta creada Éxitosamente'
             return render(request, 'login.html', {'ok': ok})
         return render(request, 'register.html', {'errors': errors,
          'username': request.POST.get('username',''),
          'password':request.POST.get('password',''),
+         'password2':request.POST.get('password2',''),
          'firstname':request.POST.get('firstname',''),
          'lastname':request.POST.get('lastname',''),
          'email': request.POST.get('email',''),
          'matricula': request.POST.get('matricula',''),
          'ci': request.POST.get('ci',''),
          'direccion': request.POST.get('direccion','')})
+
+def enviaCorreo(usuario, contrasenia, correo):
+    # return HttpResponse('la contrasenia es: %s'%contrasenia)
+    subject, from_email, to = 'Creacion de Cuenta', 'Biblioteca Virtual', correo
+    text_content = 'This is an important message.'
+    html_content = '<h1>Creaci&oacute;n de Cuenta &Eacute;xitosa</h1><br><p>Bienvenido al Sistema de Biblioteca Virtual<br>Usuario: <strong>'+usuario+'</strong><br>Contrase&ntilde;a: <strong>'+contrasenia+'</strong><br><br>ahora puede dirigirse a <a href="http://192.168.1.4:8000">Biblioteca Virtual</a> .</p>'
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+    # subject, from_email, to = 'Creacion de Cuenta', 'roy.system001@gmail.com', 'roiivan324@gmail.com'
+    # text_content = 'This is an important message.'
+    # html_content = '<p>This is an <strong>important</strong> message.</p>'
+    # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    # msg.attach_alternative(html_content, "text/html")
+    # msg.send()
+
+
+
 
 # def register_account(request):
 #     user = User.objects.create_user('juan', 'juan@gmail.com', 'juan')
